@@ -493,11 +493,13 @@ GrSelectEventsWrapper(void *r)
 static void
 GrGetNextEventWrapper(void *r)
 {
+    EPRINTF("nano-x: GrGetNextEventWrapper");
 #if 1
 	/* tell main loop to call Finish routine on event*/
 	curclient->waiting_for_event = TRUE;
 #else
 	GR_EVENT evt;
+	GR_EVENT_CLIENT_DATA *cde;
 
 	/* first check if any event ready*/
 	GrCheckNextEvent(&evt);
@@ -510,8 +512,11 @@ GrGetNextEventWrapper(void *r)
 	GsWriteType(current_fd, GrNumGetNextEvent);
 	GsWrite(current_fd, &evt, sizeof(evt));
 	if(evt.type == GR_EVENT_TYPE_CLIENT_DATA) {
-		GsWrite(fd, evt.data, evt.datalen);
-		free(evt.data);
+		cde = (GR_EVENT_CLIENT_DATA *)&evt;
+		if(cde->data) {
+			GsWrite(current_fd, cde->data, cde->datalen);
+			free(cde->data);
+		} cde->datalen = 0;
 	}
 #endif
 }
@@ -2134,6 +2139,7 @@ GsPrintResources(void)
 void
 GsDropClient(int fd)
 {
+    return;
 	GR_CLIENT *client;
 
 	if((client = GsFindClient(fd))) { /* If it exists */
@@ -2197,6 +2203,39 @@ GsRead(int fd, void *buf, int c)
 	return 0;
 }
 
+int
+GsReadAsync(int fd, void *buf, int c)
+{
+	int e, n;
+
+	n = 0;
+	int timeout = 0;
+	while(n < c) {
+		e = read(fd, ((char *)buf) + n, c - n);
+		if(e <= 0) {
+			if (e == 0)
+				EPRINTF("nano-X: client closed socket: %d\n", fd);
+			else if (errno == 6){
+			if (timeout > 1000){
+			return 0;
+			}
+				GdDelay(50);
+				timeout += 50;
+				continue;
+			} else {
+				EPRINTF("nano-X: Read error on socket %d, error %d: %s\n", fd, errno, strerror(errno));
+				EPRINTF("nano-X: GsRead failed %d %d: %d\r\n", e, n, errno);
+			}
+			GsClose(fd);
+			return -1;
+		}
+		n += e;
+	}
+
+	return 0;
+}
+
+
 /*
  * This is a wrapper to write().
  */
@@ -2242,7 +2281,7 @@ GsHandleClient(int fd)
 	current_shm_cmds_size = curclient->shm_cmds_size;
 #endif
 	/* read request header*/
-	if(GsRead(fd, buf, sizeof(nxReq)))
+	if(GsReadAsync(fd, buf, sizeof(nxReq)))
 		return;
 
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
@@ -2254,14 +2293,15 @@ GsHandleClient(int fd)
 			exit(1);
 		}
 		/* read additional request data*/
-		if(GsRead(fd, &buf[sizeof(nxReq)], len-sizeof(nxReq)))
+
+		if(GsReadAsync(fd, &buf[sizeof(nxReq)], len-sizeof(nxReq)))
 			return;
 	}
 	req = (nxReq *)&buf[0];
 
 	if(req->reqType < GrTotalNumCalls) {
 		curfunc = (char *)GrFunctions[req->reqType].name;
-		DPRINTF("HandleClient %s\n", curfunc);
+		EPRINTF("HandleClient %s\n", curfunc);
 		GrFunctions[req->reqType].func(req);
 	} else {
 		EPRINTF("nano-X: GsHandleClient bad function\n");

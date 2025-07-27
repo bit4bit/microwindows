@@ -47,6 +47,6 @@ def main(port_a, port_b):
         logging.error(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    PORT_A = 8023
-    PORT_B = 8027
+    PORT_A = 8025
+    PORT_B = 8029
     main(PORT_A, PORT_B)

@@ -30,13 +30,13 @@
 #define GrCopyArea              SVR_GrCopyArea
 #define GrCopyGC                SVR_GrCopyGC
 #define GrCreateFont            SVR_GrCreateFont
-#define GrCreateTimer		SVR_GrCreateTimer        
+#define GrCreateTimer		SVR_GrCreateTimer
 #define GrDelay			SVR_GrDelay
-#define GrDestroyCursor		SVR_GrDestroyCursor      
+#define GrDestroyCursor		SVR_GrDestroyCursor
 #define GrDestroyFont           SVR_GrDestroyFont
 #define GrDestroyGC             SVR_GrDestroyGC
 #define GrDestroyRegion         SVR_GrDestroyRegion
-#define GrDestroyTimer		SVR_GrDestroyTimer       
+#define GrDestroyTimer		SVR_GrDestroyTimer
 #define GrDestroyWindow         SVR_GrDestroyWindow
 #define GrDrawImageBits         SVR_GrDrawImageBits
 #define GrDrawImageFromBuffer	SVR_GrDrawImageFromBuffer
@@ -49,11 +49,11 @@
 #define GrFillPoly              SVR_GrFillPoly
 #define GrFillRect              SVR_GrFillRect
 #define GrFindColor             SVR_GrFindColor
-#define GrFreeFontList		SVR_GrFreeFontList       
+#define GrFreeFontList		SVR_GrFreeFontList
 #define GrFreeImage             SVR_GrFreeImage
 #define GrGetFocus              SVR_GrGetFocus
 #define GrGetFontInfo           SVR_GrGetFontInfo
-#define GrGetFontList		SVR_GrGetFontList        
+#define GrGetFontList		SVR_GrGetFontList
 #define GrGetGCInfo             SVR_GrGetGCInfo
 #define GrGetGCTextSize         SVR_GrGetGCTextSize
 #define GrGetImageInfo          SVR_GrGetImageInfo
@@ -74,7 +74,7 @@
 #define GrMapWindow             SVR_GrMapWindow
 #define GrMoveCursor            SVR_GrMoveCursor
 #define GrMoveWindow            SVR_GrMoveWindow
-#define GrNewCursor		SVR_GrNewCursor          
+#define GrNewCursor		SVR_GrNewCursor
 #define GrNewGC                 SVR_GrNewGC
 #define GrNewInputWindow        SVR_GrNewInputWindow
 #define GrNewPixmap             SVR_GrNewPixmap
@@ -88,7 +88,7 @@
 #define GrPoints                SVR_GrPoints
 #define GrPoint                 SVR_GrPoint
 #define GrPoly                  SVR_GrPoly
-#define GrQueryTree		SVR_GrQueryTree          
+#define GrQueryTree		SVR_GrQueryTree
 #define GrRaiseWindow           SVR_GrRaiseWindow
 #define GrReadArea              SVR_GrReadArea
 #define GrRectInRegion          SVR_GrRectInRegion
@@ -116,7 +116,7 @@
 #define GrSetScreenSaverTimeout SVR_GrSetScreenSaverTimeout
 #define GrSetSelectionOwner     SVR_GrSetSelectionOwner
 #define GrSetSystemPalette      SVR_GrSetSystemPalette
-#define GrSetWindowCursor	SVR_GrSetWindowCursor    
+#define GrSetWindowCursor	SVR_GrSetWindowCursor
 #define GrSetWMProperties       SVR_GrSetWMProperties
 #define GrSubtractRegion        SVR_GrSubtractRegion
 #define GrText                  SVR_GrText
@@ -221,7 +221,7 @@ struct gr_gc {
         int             linestyle;	/* GR_LINE_SOLID, GR_LINE_ONOFF_DASH */
         unsigned long   dashmask;
         char            dashcount;
-   
+
         int             fillmode;	/* GR_FILL_SOLID, STIPPLE, OPAQUE_STIPPLE, TILE */
         GR_STIPPLE      stipple;	/* width,height,bitmap*/
         struct {
@@ -246,7 +246,7 @@ struct gr_region {
 	GR_CLIENT *	owner;		/* client that created it */
 	GR_REGION *	next;
 };
- 
+
 /*
  * Structure to remember fonts.
  */
@@ -283,7 +283,7 @@ typedef struct {
  * Structure to remember timers.
  */
 typedef struct gr_timer	GR_TIMER;
-struct gr_timer 
+struct gr_timer
 {
     GR_TIMER_ID    id;       /* This instances ID */
     GR_CLIENT     *owner;    /* client that created it */
@@ -472,6 +472,7 @@ GR_CLIENT	*GsFindClient(int fd);
 void		GsDestroyClientResources(GR_CLIENT * client);
 void		GsDropClient(int fd);
 int		GsRead(int fd, void *buf, int c);
+int     GsReadAsync(int fd, void *buf, int c);
 int		GsWrite(int fd, void *buf, int c);
 void		GsHandleClient(int fd);
 void		GsResetScreenSaver(void);

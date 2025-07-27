@@ -198,7 +198,7 @@ MAIN(int argc, char **argv)			/* ALLEGRO=real_main(), main() otherwise*/
 void
 GsAcceptClientFd(int i)
 {
-	GR_CLIENT *client, *cl;
+	GR_CLIENT *client;
 	if (root_client != NULL) {
 	  return;
 	}
@@ -219,15 +219,8 @@ GsAcceptClientFd(int i)
 	client->waiting_for_event = FALSE;
 	client->shm_cmds = 0;
 
-	if(connectcount++ == 0)
-		root_client = client;
-	else {
-		cl = root_client;
-			while(cl->next)
-				cl = cl->next;
-		client->prev = cl;
-		cl->next = client;
-	}
+	root_client = client;
+	curclient = root_client;
 }
 
 /*
@@ -718,10 +711,16 @@ GsSelect(GR_TIMEOUT timeout)
 			return;					/* yes - return without sleeping*/
 
 		/* give up time-slice & sleep for a bit */
+
 		GdDelay(WAITTIME);
 		waittime += WAITTIME;
 		GsAcceptClient();
 		GsHandleClient(root_client->id);
+		if (curclient->waiting_for_event) {
+		    curclient->waiting_for_event = FALSE;
+		    GrGetNextEventWrapperFinish(root_client->id);
+						return;
+		}
 		/* have we timed out? */
 		if (waittime >= timeout)
 		{
@@ -737,7 +736,7 @@ GsSelect(GR_TIMEOUT timeout)
 				 * Currently return a timeout event regardless of whether client
 				 * has selected for it.
 				 */
-				if ((gp = (GR_EVENT_GENERAL *)GsAllocEvent(curclient)) != NULL)
+				if ((gp = (GR_EVENT_GENERAL *)GsAllocEvent(root_client)) != NULL)
 					gp->type = GR_EVENT_TYPE_TIMEOUT;
 			}
 			return;
