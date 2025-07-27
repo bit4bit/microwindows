@@ -55,7 +55,7 @@ char		*progname;		/* Name of this program.. */
 
 int		current_fd;		/* the fd of the client talking to */
 int		connectcount = 0;	/* number of connections to server */
-GR_CLIENT	*root_client;		/* root entry of the client table */
+GR_CLIENT	*root_client = NULL;		/* root entry of the client table */
 char		*current_shm_cmds;
 int			current_shm_cmds_size;
 static int	keyb_fd;		/* the keyboard file descriptor */
@@ -199,7 +199,10 @@ void
 GsAcceptClientFd(int i)
 {
 	GR_CLIENT *client, *cl;
-
+	if (root_client != NULL) {
+	  return;
+	}
+	EPRINTF("nano-X: Accepting client connection\n");
 	if(!(client = malloc(sizeof(GR_CLIENT)))) {
 #if !NONETWORK
 		close(i);
@@ -717,6 +720,7 @@ GsSelect(GR_TIMEOUT timeout)
 		/* give up time-slice & sleep for a bit */
 		GdDelay(WAITTIME);
 		waittime += WAITTIME;
+		GsAcceptClient();
 		GsHandleClient(root_client->id);
 		/* have we timed out? */
 		if (waittime >= timeout)

@@ -23,6 +23,7 @@ def handle_connection(client_socket_a, port_b):
             client_socket_b, addr_b = server_socket_b.accept()
             logging.info(f"Accepted connection from {addr_b} on port {port_b}")
 
+            client_socket_a.sendall(b"READY")
             # Forward data between port A and B
             threading.Thread(target=forward_data, args=(client_socket_b, client_socket_a)).start()
             threading.Thread(target=forward_data, args=(client_socket_a, client_socket_b)).start()
@@ -46,6 +47,6 @@ def main(port_a, port_b):
         logging.error(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    PORT_A = 8010
-    PORT_B = 8012
+    PORT_A = 8023
+    PORT_B = 8027
     main(PORT_A, PORT_B)

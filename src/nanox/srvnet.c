@@ -30,7 +30,7 @@
 #endif
 #include "serv.h"
 #include "nxproto.h"
-
+#include "osdep.h"
 /* fix bad MIPS sys headers...*/
 #ifndef SOCK_STREAM
 #define SOCK_STREAM	2	/* <asm/socket.h>*/
@@ -1858,6 +1858,7 @@ int
 GsOpenSocket(void)
 {
 	struct sockaddr_in sckt;
+
 	if ((un_sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
 		EPRINTF("nano-X: Error creating socket\n");
 		return -1;
@@ -1873,6 +1874,24 @@ GsOpenSocket(void)
 		EPRINTF("nano-X: Error connecting to socket\n");
 		return -1;
 	}
+	char initPacket[5];
+	while(1) {
+    	if (read(un_sock, initPacket, sizeof(initPacket)) != 5) {
+          if (errno == 6) {
+              GdDelay(1000);
+              EPRINTF("nano-x: waiting for initial packet from socket\n");
+              continue;
+          } else {
+    		EPRINTF("nano-X: Failed to read initial packet from socket, error %d: %s\n", errno, strerror(errno));
+
+    		return -1;
+          }
+    	} else {
+         EPRINTF("nano-X: Received initial packet from socket\n");
+    		break;
+    	}
+	}
+
 	return 1;
 }
 
@@ -1893,8 +1912,7 @@ GsCloseSocket(void)
 void
 GsAcceptClient(void)
 {
-    EPRINTF("nano-X: Accepting client connection\n");
-	GsAcceptClientFd(un_sock);
+ GsAcceptClientFd(un_sock);
 }
 
 /*
@@ -2160,7 +2178,12 @@ GsRead(int fd, void *buf, int c)
 		if(e <= 0) {
 			if (e == 0)
 				EPRINTF("nano-X: client closed socket: %d\n", fd);
-			else EPRINTF("nano-X: GsRead failed %d %d: %d\r\n", e, n, errno);
+				else if (errno == 6){
+					return 0;
+				} else {
+				EPRINTF("nano-X: Read error on socket %d, error %d: %s\n", fd, errno, strerror(errno));
+				EPRINTF("nano-X: GsRead failed %d %d: %d\r\n", e, n, errno);
+			}
 			GsClose(fd);
 			return -1;
 		}
@@ -2182,7 +2205,7 @@ int GsWrite(int fd, void *buf, int c)
 	while(n < c) {
 		e = write(fd, ((char *) buf + n), (c - n));
 		if(e <= 0) {
-			/*EPRINTF("nano-X: GsWrite failed %d\n", fd);*/
+			EPRINTF("nano-X: GsWrite failed %d\n", fd);
 			GsClose(fd);
 			return -1;
 		}
@@ -2234,7 +2257,7 @@ GsHandleClient(int fd)
 
 	if(req->reqType < GrTotalNumCalls) {
 		curfunc = (char *)GrFunctions[req->reqType].name;
-		/*DPRINTF("HandleClient %s\n", curfunc);*/
+		DPRINTF("HandleClient %s\n", curfunc);
 		GrFunctions[req->reqType].func(req);
 	} else {
 		EPRINTF("nano-X: GsHandleClient bad function\n");
