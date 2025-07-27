@@ -188,6 +188,7 @@ MAIN(int argc, char **argv)			/* ALLEGRO=real_main(), main() otherwise*/
 	if(GsInitialize() < 0)
 		exit(1);
 
+	EPRINTF("nano-x: entering main loop\n");
 	while(1)
 		GsSelect(GR_TIMEOUT_BLOCK);
 	return 0;
@@ -370,7 +371,7 @@ GsSelect(GR_TIMEOUT timeout)
 	struct timeval tout;
 	struct timeval *to;
 	static int updatecount;
-
+	EPRINTF("nano-x: selecting\n");
 #if CONFIG_ARCH_PC98
 	if (GsCheckMouseEvent())
 		return;
@@ -517,6 +518,7 @@ again:
 				continue;
 
 #if NONETWORK
+    EPRINTF("nano-x: no network support\n");
 		/* check for input on registered file descriptors */
 		for (int fd = 0; fd < regfdmax; fd++)
 		{
@@ -534,9 +536,8 @@ again:
 		}
 #else
 		/* If a client is trying to connect, accept it: */
-		if(FD_ISSET(un_sock, &rfds))
-			GsAcceptClient();
-
+		GsAcceptClient();
+		EPRINTF("nano-x: accepted client\n");
 		/* If a client is sending us a command, handle it: */
 		curclient = root_client;
 		while (curclient)
@@ -550,12 +551,12 @@ again:
 			curclient = curclient_next;
 		}
 #endif /* NONETWORK */
-	} 
+	}
 	else if (e == 0)		/* timeout*/
 	{
 		updatecount = 0;
 #if NONETWORK
-		/* 
+		/*
 		 * Timeout has occured. Currently return a timeout event
 		 * regardless of whether client has selected for it.
 		 * Note: this will be changed back to GR_EVENT_TYPE_NONE
@@ -676,13 +677,13 @@ GsSelect (GR_TIMEOUT timeout)
 /* this GsSelect() is used for all polling-based platforms not specially handled above*/
 #define WAITTIME	50		/* blocking sleep interval in msecs unless polling*/
 
-void 
+// EMSCRIPTEN select
+void
 GsSelect(GR_TIMEOUT timeout)
 {
 	int numevents = 0;
 	GR_TIMEOUT waittime = 0;
 	GR_EVENT_GENERAL *gp;
-
 #if MW_FEATURE_TIMERS
 	struct timeval tout;
 	if (timeout != GR_TIMEOUT_POLL)
@@ -708,15 +709,15 @@ GsSelect(GR_TIMEOUT timeout)
 		while (GsCheckKeyboardEvent())
 			if (++numevents > 10)
 				break;				/* don't handle too many events at one shot*/
-		
+
 		/* did we handle any input or were we just polling?*/
 		if (numevents || timeout == GR_TIMEOUT_POLL)
 			return;					/* yes - return without sleeping*/
 
 		/* give up time-slice & sleep for a bit */
 		GdDelay(WAITTIME);
-		waittime += WAITTIME; 
-
+		waittime += WAITTIME;
+		GsHandleClient(root_client->id);
 		/* have we timed out? */
 		if (waittime >= timeout)
 		{
@@ -728,8 +729,8 @@ GsSelect(GR_TIMEOUT timeout)
 			if (timeout != 0)
 #endif
 			{
-				/* Timeout has occured.  
-				 * Currently return a timeout event regardless of whether client 
+				/* Timeout has occured.
+				 * Currently return a timeout event regardless of whether client
 				 * has selected for it.
 				 */
 				if ((gp = (GR_EVENT_GENERAL *)GsAllocEvent(curclient)) != NULL)
@@ -874,7 +875,7 @@ CheckVtChange(void *arg)
 	GdAddTimer(50, CheckVtChange, NULL);
 }
 #endif
-  
+
 /*
  * Initialize the graphics and mouse devices at startup.
  * Returns nonzero with a message printed if the initialization failed.
@@ -1078,7 +1079,7 @@ GsInitialize(void)
 	/* Force root window screen paint*/
 	GsRedrawScreen();
 
-	/* 
+	/*
 	 * Force the cursor to appear on the screen at startup.
 	 * (not required with above GsRedrawScreen)
 	GdHideCursor(psd);

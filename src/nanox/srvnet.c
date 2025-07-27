@@ -24,6 +24,7 @@
 #endif
 #if __ECOS || __EMSCRIPTEN__
 #include <netinet/in.h>
+#include <arpa/inet.h>
 #else
 #include <sys/un.h>
 #endif
@@ -1856,53 +1857,20 @@ GrShmCmdsFlushWrapper(void *r)
 int
 GsOpenSocket(void)
 {
-#if __ECOS || __EMSCRIPTEN__
 	struct sockaddr_in sckt;
-#else
-	struct sockaddr_un sckt;
-#endif
-#ifndef SUN_LEN
-#define SUN_LEN(ptr)	(sizeof(sckt))
-#endif
-
-#if __ECOS || __EMSCRIPTEN__
-	EPRINTF("ECOS or EMSCRIPTEN\n");
-	/* Create the socket */
-	if((un_sock = socket(AF_INET, SOCK_STREAM, 0)) == -1){
-		EPRINTF("socket() failed: %s\n", strerror(errno));
-	    return -1;
+	if ((un_sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) {
+		EPRINTF("nano-X: Error creating socket\n");
+		return -1;
 	}
-
-	/* Bind to any/all local IP addresses */
-	memset( &sckt, '\0', sizeof(sckt) );
 	sckt.sin_family = AF_INET;
-#ifdef __ECOS
-	sckt.sin_len = sizeof(sckt);
-#endif
-	sckt.sin_port = htons(GR_NUM_SOCKET);
-	sckt.sin_addr.s_addr = INADDR_ANY;
-	EPRINTF("GR INET OPENED\n");
-#else
-    EPRINTF("GR NAMED SOCKET\n");
-	/* remove named pipe if exists */
-	unlink(GR_NAMED_SOCKET);
-
-	/* Create the socket: */
-	if((un_sock = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
-		return -1;
-
-	/* Bind a name to the socket: */
-	sckt.sun_family = AF_UNIX;
-	strcpy(sckt.sun_path, GR_NAMED_SOCKET);
-#endif
-	if(bind(un_sock, (struct sockaddr *) &sckt, SUN_LEN(&sckt)) < 0) {
-		EPRINTF("bind() failed: %s\n", strerror(errno));
+	sckt.sin_port = htons(6600);
+	if (inet_pton(AF_INET, "127.0.0.1", &sckt.sin_addr) != 1) {
+		EPRINTF("nano-X: Error setting socket address\n");
 		return -1;
 	}
 
-	/* Start listening on the socket: */
-	if(listen(un_sock, 5) == -1) {
-		EPRINTF("listen() failed: %s\n", strerror(errno));
+	if (connect(un_sock, (struct sockaddr *) &sckt, sizeof(sckt)) == -1) {
+		EPRINTF("nano-X: Error connecting to socket\n");
 		return -1;
 	}
 	return 1;
@@ -1925,19 +1893,8 @@ GsCloseSocket(void)
 void
 GsAcceptClient(void)
 {
-	int i;
-#if __ECOS || __EMSCRIPTEN__
-	struct sockaddr_in sckt;
-#else
-	struct sockaddr_un sckt;
-#endif
-	socklen_t size = sizeof(sckt);
-
-	if((i = accept(un_sock, (struct sockaddr *) &sckt, &size)) == -1) {
-		EPRINTF("nano-X: Error accept failed (%d)\n", errno);
-		return;
-	}
-	GsAcceptClientFd(i);
+    EPRINTF("nano-X: Accepting client connection\n");
+	GsAcceptClientFd(un_sock);
 }
 
 /*
