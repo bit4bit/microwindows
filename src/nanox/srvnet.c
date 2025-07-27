@@ -22,7 +22,7 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 #endif
-#if __ECOS
+#if __ECOS || __EMSCRIPTEN__
 #include <netinet/in.h>
 #else
 #include <sys/un.h>
@@ -50,7 +50,7 @@ GrNotImplementedWrapper(void *r)
     EPRINTF("nano-X: Function %s() not implemented\n", curfunc);
 }
 
-static void 
+static void
 GrOpenWrapper(void *r)
 {
 	nxOpenReq *req = r;
@@ -252,7 +252,7 @@ GrPointInRegionWrapper(void *r)
 #if DYNAMICREGIONS
 	nxPointInRegionReq *req = r;
 	GR_BOOL ret_value = GrPointInRegion(req->regionid, req->x, req->y);
-		
+
 	GsWriteType(current_fd, GrNumPointInRegion);
 	GsWrite(current_fd, &ret_value, sizeof(ret_value));
 #endif
@@ -264,10 +264,10 @@ GrRectInRegionWrapper(void *r)
 #if DYNAMICREGIONS
 	nxRectInRegionReq *req = r;
 	unsigned short ret_value;
-	
+
 	ret_value = (unsigned short)GrRectInRegion(req->regionid,
 		req->x, req->y, req->w, req->h);
-		
+
 	GsWriteType(current_fd, GrNumRectInRegion);
 	GsWrite(current_fd, &ret_value, sizeof(ret_value));
 #endif
@@ -279,7 +279,7 @@ GrEmptyRegionWrapper(void *r)
 #if DYNAMICREGIONS
 	nxEmptyRegionReq *req = r;
 	GR_BOOL		  ret_value;
-	
+
 	ret_value = GrEmptyRegion(req->regionid);
 	GsWriteType(current_fd, GrNumEmptyRegion);
 	GsWrite(current_fd, &ret_value, sizeof(ret_value));
@@ -292,7 +292,7 @@ GrEqualRegionWrapper(void *r)
 #if DYNAMICREGIONS
 	nxEqualRegionReq *req = r;
 	GR_BOOL		  ret_value;
-	
+
 	ret_value = GrEqualRegion(req->region1, req->region2);
 	GsWriteType(current_fd, GrNumEqualRegion);
 	GsWrite(current_fd, &ret_value, sizeof(ret_value));
@@ -304,7 +304,7 @@ GrOffsetRegionWrapper(void *r)
 {
 #if DYNAMICREGIONS
 	nxOffsetRegionReq *req = r;
-	
+
 	GrOffsetRegion(req->region, req->dx, req->dy);
 #endif
 }
@@ -344,7 +344,7 @@ GrGetRegionBoxWrapper(void *r)
 	GR_RECT		   ret_rect;
 
 	ret_value = GrGetRegionBox(req->regionid, &ret_rect);
-		
+
 	GsWriteType(current_fd, GrNumGetRegionBox);
 	GsWrite(current_fd, &ret_rect, sizeof(ret_rect));
 	GsWriteType(current_fd, GrNumGetRegionBox);
@@ -359,12 +359,12 @@ GrNewPolygonRegionWrapper(void *r)
 	GR_REGION_ID region;
 	nxNewPolygonRegionReq *req = r;
 	int count;
-	
+
 	/* FIXME: unportable method, depends on sizeof(int) in GR_POINT*/
-	count = GetReqVarLen(req) / sizeof(GR_POINT);	
+	count = GetReqVarLen(req) / sizeof(GR_POINT);
 	region = GrNewPolygonRegion(req->mode, count,
 		(GR_POINT *)GetReqData(req));
-	
+
 	GsWriteType(current_fd, GrNumNewPolygonRegion);
 	GsWrite(current_fd, &region, sizeof(region));
 #endif
@@ -776,7 +776,7 @@ GrSetGCStippleWrapper(void *r)
 #if MW_FEATURE_SHAPES
 	nxSetGCStippleReq *req = r;
 	GR_BITMAP *buffer;
-	
+
 	buffer = ALLOCA(GR_BITMAP_SIZE(req->width, req->height) *
 		sizeof(GR_BITMAP));
 
@@ -1069,7 +1069,7 @@ GrSetWMPropertiesWrapper(void *r)
 	nxSetWMPropertiesReq *req = r;
 	GR_WM_PROPERTIES *props = GetReqData(req);
 
-	if(GetReqVarLen(req) - sizeof(GR_WM_PROPERTIES)) 
+	if(GetReqVarLen(req) - sizeof(GR_WM_PROPERTIES))
 		props->title = (char *)props + sizeof(GR_WM_PROPERTIES);
 	else
 		props->title = NULL;
@@ -1082,7 +1082,7 @@ GrGetWMPropertiesWrapper(void *r)
 	nxGetWMPropertiesReq *req = r;
 	UINT16 textlen;
 	GR_WM_PROPERTIES props;
-	
+
 	GrGetWMProperties(req->windowid, &props);
 
 	if(props.title)
@@ -1323,21 +1323,21 @@ static void freeImageBuffer(imagelist_t *buffer)
 
  while(ptr) {
    if (ptr == buffer) {
-     if (prev) 
+     if (prev)
 	prev->next = buffer->next;
-     else 
+     else
 	imageListHead = buffer->next;
-     
+
      if (!imageListHead) imageListTail = 0;
-     
+
      free(buffer->data);
      free(buffer);
      return;
    }
-   
+
    prev = ptr;
    ptr = ptr->next;
- }  
+ }
 }
 #endif
 
@@ -1345,7 +1345,7 @@ static void
 GrImageBufferAllocWrapper(void *r)
 {
  nxImageBufferAllocReq *req = r;
- 
+
  /* Add a new buffer to the end of the list */
 
  if (!imageListTail) {
@@ -1378,16 +1378,16 @@ GrImageBufferSendWrapper(void *r)
 
  if (!buffer) return;
 
- if (buffer->offset + req->size >= buffer->size) 
+ if (buffer->offset + req->size >= buffer->size)
    csize = buffer->size - buffer->offset;
  else
    csize = req->size;
 
  if (!csize) return;
 
- memcpy((void *) (((char *)buffer->data) + buffer->offset), 
+ memcpy((void *) (((char *)buffer->data) + buffer->offset),
 	 GetReqData(req), csize);
- 
+
  buffer->offset += csize;
 }
 
@@ -1398,9 +1398,9 @@ GrLoadImageFromBufferWrapper(void *r)
  GR_IMAGE_ID		id;
  imagelist_t *buffer;
  nxLoadImageFromBufferReq *req = r;
- 
+
  buffer = findImageBuffer(req->buffer);
- 
+
  if (!buffer) return;
 
  id = GrLoadImageFromBuffer(buffer->data, buffer->size, req->flags);
@@ -1416,15 +1416,15 @@ GrDrawImageFromBufferWrapper(void *r)
 {
  imagelist_t *buffer;
  nxDrawImageFromBufferReq *req = r;
- 
+
  buffer = findImageBuffer(req->buffer);
- 
+
  if (!buffer) return;
 
- GrDrawImageFromBuffer(req->drawid, req->gcid, req->x, req->y, req->width, 
-			req->height, buffer->data, buffer->size, 
+ GrDrawImageFromBuffer(req->drawid, req->gcid, req->x, req->y, req->width,
+			req->height, buffer->data, buffer->size,
 			req->flags);
- 
+
  freeImageBuffer(buffer);
 }
 #else /* if ! MW_FEATURE_IMAGES */
@@ -1438,7 +1438,7 @@ static void
 GrDestroyTimerWrapper(void *r)
 {
     nxDestroyTimerReq *req = r;
-    
+
     GrDestroyTimer(req->timerid);
 }
 #else /* if ! MW_FEATURE_TIMERS */
@@ -1449,7 +1449,7 @@ static void
 GrSetPortraitModeWrapper(void *r)
 {
     nxSetPortraitModeReq *req = r;
-    
+
     GrSetPortraitMode(req->portraitmode);
 }
 
@@ -1519,7 +1519,7 @@ GrReqShmCmdsWrapper(void *r)
 #endif /* HAVE_SHAREDMEM_SUPPORT*/
 }
 
-static void 
+static void
 GrGetFontListWrapper(void *r)
 {
 #if MW_FEATURE_CLIENTDATA
@@ -1545,7 +1545,7 @@ GrGetFontListWrapper(void *r)
 			GsWrite(current_fd, &mwlen, sizeof(int));
 			GsWrite(current_fd, list[i]->mwname, mwlen * sizeof(char));
 		}
-		
+
 		GrFreeFontList(&list, num);
 	}
 #endif
@@ -1574,7 +1574,7 @@ GrSetWindowRegionWrapper(void *r)
 	GrSetWindowRegion(req->wid, req->rid, req->type);
 #endif
 }
- 
+
 static void
 GrStretchAreaWrapper(void *r)
 {
@@ -1608,7 +1608,7 @@ GrGrabKeyWrapper(void *r)
 }
 
 static void
-GrSetTransformWrapper(void *r) 
+GrSetTransformWrapper(void *r)
 {
 #if !MW_FEATURE_TINY
 	nxSetTransformReq *req = r;
@@ -1635,17 +1635,17 @@ GrCreateFontFromBufferWrapper(void *r)
 	imagelist_t *buffer;
 	nxCreateFontFromBufferReq *req = r;
 	GR_FONT_ID result;
-	
+
 	buffer = findImageBuffer(req->buffer_id);
 	if (!buffer) {
 		result = 0;
 	} else {
 		result = GrCreateFontFromBuffer(buffer->data, buffer->size,
 			(const char *)req->format, req->height, req->width);
-		
+
 		freeImageBuffer(buffer);
 	}
-	
+
 	GsWriteType(current_fd, GrNumCreateFontFromBuffer);
 	GsWrite(current_fd, &result, sizeof(result));
 #endif /*HAVE_FREETYPE_2_SUPPORT*/
@@ -1744,12 +1744,12 @@ static const struct GrFunction GrFunctions[] = {
 	/*  67 */ {GrSubtractRegionWrapper, "GrSubtractRegion"},
 	/*  68 */ {GrXorRegionWrapper, "GrXorRegion"},
 	/*  69 */ {GrPointInRegionWrapper, "GrPointInRegion"},
-	/*  70 */ {GrRectInRegionWrapper, "GrRectInRegion"},	
-	/*  71 */ {GrEmptyRegionWrapper, "GrEmptyRegion"},	
-	/*  72 */ {GrEqualRegionWrapper, "GrEqualRegion"},	
-	/*  73 */ {GrOffsetRegionWrapper, "GrOffsetRegion"},	
-	/*  74 */ {GrGetRegionBoxWrapper, "GrGetRegionBox"},	
-	/*  75 */ {GrNewPolygonRegionWrapper, "GrNewPolygonRegion"},	
+	/*  70 */ {GrRectInRegionWrapper, "GrRectInRegion"},
+	/*  71 */ {GrEmptyRegionWrapper, "GrEmptyRegion"},
+	/*  72 */ {GrEqualRegionWrapper, "GrEqualRegion"},
+	/*  73 */ {GrOffsetRegionWrapper, "GrOffsetRegion"},
+	/*  74 */ {GrGetRegionBoxWrapper, "GrGetRegionBox"},
+	/*  75 */ {GrNewPolygonRegionWrapper, "GrNewPolygonRegion"},
 	/*  76 */ {GrArcWrapper, "GrArc"},
 	/*  77 */ {GrArcAngleWrapper, "GrArcAngle"},
 	/*  78 */ {GrSetWMPropertiesWrapper, "GrSetWMProperties"},
@@ -1853,10 +1853,10 @@ GrShmCmdsFlushWrapper(void *r)
  * This function is used to bind to the named socket which is used to
  * accept connections from the clients.
  */
-int 
+int
 GsOpenSocket(void)
 {
-#if __ECOS
+#if __ECOS || __EMSCRIPTEN__
 	struct sockaddr_in sckt;
 #else
 	struct sockaddr_un sckt;
@@ -1865,18 +1865,25 @@ GsOpenSocket(void)
 #define SUN_LEN(ptr)	(sizeof(sckt))
 #endif
 
-#if __ECOS
+#if __ECOS || __EMSCRIPTEN__
+	EPRINTF("ECOS or EMSCRIPTEN\n");
 	/* Create the socket */
-	if((un_sock = socket(AF_INET, SOCK_STREAM, 0)) == -1) 
+	if((un_sock = socket(AF_INET, SOCK_STREAM, 0)) == -1){
+		EPRINTF("socket() failed: %s\n", strerror(errno));
 	    return -1;
+	}
 
 	/* Bind to any/all local IP addresses */
 	memset( &sckt, '\0', sizeof(sckt) );
 	sckt.sin_family = AF_INET;
+#ifdef __ECOS
 	sckt.sin_len = sizeof(sckt);
-	sckt.sin_port = htons(6600);
+#endif
+	sckt.sin_port = htons(GR_NUM_SOCKET);
 	sckt.sin_addr.s_addr = INADDR_ANY;
+	EPRINTF("GR INET OPENED\n");
 #else
+    EPRINTF("GR NAMED SOCKET\n");
 	/* remove named pipe if exists */
 	unlink(GR_NAMED_SOCKET);
 
@@ -1888,12 +1895,16 @@ GsOpenSocket(void)
 	sckt.sun_family = AF_UNIX;
 	strcpy(sckt.sun_path, GR_NAMED_SOCKET);
 #endif
-	if(bind(un_sock, (struct sockaddr *) &sckt, SUN_LEN(&sckt)) < 0)
+	if(bind(un_sock, (struct sockaddr *) &sckt, SUN_LEN(&sckt)) < 0) {
+		EPRINTF("bind() failed: %s\n", strerror(errno));
 		return -1;
+	}
 
 	/* Start listening on the socket: */
-	if(listen(un_sock, 5) == -1)
+	if(listen(un_sock, 5) == -1) {
+		EPRINTF("listen() failed: %s\n", strerror(errno));
 		return -1;
+	}
 	return 1;
 }
 
@@ -1903,7 +1914,9 @@ GsCloseSocket(void)
 	if(un_sock != -1)
 		close(un_sock);
 	un_sock = -1;
+#if !(__ECOS || __EMSCRIPTEN__)
 	unlink(GR_NAMED_SOCKET);
+#endif
 }
 
 /*
@@ -1913,7 +1926,7 @@ void
 GsAcceptClient(void)
 {
 	int i;
-#if __ECOS
+#if __ECOS || __EMSCRIPTEN__
 	struct sockaddr_in sckt;
 #else
 	struct sockaddr_un sckt;
@@ -1944,7 +1957,7 @@ GsFindClient(int fd)
 			return(client);
 		client = client->next;
 	}
-	
+
 	return 0;
 }
 
