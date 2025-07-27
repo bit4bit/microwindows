@@ -1874,7 +1874,7 @@ GsOpenSocket(void)
 		EPRINTF("nano-X: Error connecting to socket\n");
 		return -1;
 	}
-	char initPacket[5];
+	char initPacket[5] = {0};
 	while(1) {
     	if (read(un_sock, initPacket, sizeof(initPacket)) != 5) {
           if (errno == 6) {
@@ -1887,7 +1887,11 @@ GsOpenSocket(void)
     		return -1;
           }
     	} else {
-         EPRINTF("nano-X: Received initial packet from socket\n");
+         if (strcmp(initPacket, "READY") == 0) {
+            EPRINTF("nano-X: Received initial packet from socket\n");
+         } else {
+             EPRINTF("nano-X: Invalid initial packet from socket\n");
+         }
     		break;
     	}
 	}
