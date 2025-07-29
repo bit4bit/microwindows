@@ -16,6 +16,7 @@ def handle_connection(client_socket_a, port_b):
     try:
         # Listen on port B
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket_b:
+            server_socket_b.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server_socket_b.bind(('0.0.0.0', port_b))
             server_socket_b.listen(1)
             logging.info(f"Listening for a connection on port {port_b}")
@@ -34,6 +35,7 @@ def main(port_a, port_b):
     try:
         # Listen on port A
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket_a:
+            server_socket_a.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
             server_socket_a.bind(('0.0.0.0', port_a))
             server_socket_a.listen(1)
             logging.info(f"Listening for a connection on port {port_a}")
@@ -47,6 +49,6 @@ def main(port_a, port_b):
         logging.error(f"An error occurred: {e}")
 
 if __name__ == "__main__":
-    PORT_A = 8025
-    PORT_B = 8029
+    PORT_A = 8026
+    PORT_B = 6600
     main(PORT_A, PORT_B)

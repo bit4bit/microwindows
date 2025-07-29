@@ -472,7 +472,7 @@ GR_CLIENT	*GsFindClient(int fd);
 void		GsDestroyClientResources(GR_CLIENT * client);
 void		GsDropClient(int fd);
 int		GsRead(int fd, void *buf, int c);
-int     GsReadAsync(int fd, void *buf, int c);
+int     GsReadAsync(int fd, void *buf, int c, int timeout);
 int		GsWrite(int fd, void *buf, int c);
 void		GsHandleClient(int fd);
 void		GsResetScreenSaver(void);

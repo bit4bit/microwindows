@@ -682,7 +682,7 @@ typedef void (*GR_FNCALLBACKEVENT)(GR_EVENT *);
 #define GR_GRAB_EXCLUSIVE_MOUSE       3
 
 /**
- * Highest legal value of any GR_GRAB_xxx constant.  (Lowest legal value 
+ * Highest legal value of any GR_GRAB_xxx constant.  (Lowest legal value
  * must be 0).
  *
  * @internal
@@ -749,7 +749,7 @@ typedef void (*GR_FNCALLBACKEVENT)(GR_EVENT *);
         "Bad line attribute gc: %d\n",  \
         "Bad fill mode gc: %d\n",       \
 	"Bad region id: %d\n",
-        
+
 extern const char *nxErrorStrings[];
 
 /* Public graphics routines. */
@@ -815,7 +815,7 @@ void		GrClearArea(GR_WINDOW_ID wid, GR_COORD x, GR_COORD y,
 				GR_SIZE width, GR_SIZE height, int exposeflag);
 void		GrSelectEvents(GR_WINDOW_ID wid, GR_EVENT_MASK eventmask);
 void		GrGetNextEvent(GR_EVENT *ep);
-int		GrGetTypedEvent(GR_WINDOW_ID wid, GR_EVENT_MASK mask, 
+int		GrGetTypedEvent(GR_WINDOW_ID wid, GR_EVENT_MASK mask,
 				GR_UPDATE_TYPE update, GR_EVENT *ep, GR_BOOL block);
 typedef GR_BOOL (*GR_TYPED_EVENT_CALLBACK)(GR_WINDOW_ID, GR_EVENT_MASK,
 				GR_UPDATE_TYPE, GR_EVENT *, void *);
@@ -1031,7 +1031,7 @@ typedef struct {
 #else
 #define GR_NAMED_SOCKET	"/tmp/.nano-X"		/* AF_UNIX socket name*/
 #endif
-#define GR_NUM_SOCKET	6600			/* AF_INET socket number*/
+#define GR_NUM_SOCKET	7700			/* AF_INET socket number*/
 
 #if RTEMS
   /* RTEMS requires rtems_main()*/

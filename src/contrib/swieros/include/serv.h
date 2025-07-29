@@ -81,7 +81,7 @@ struct gr_gc {
         int             linestyle;	/* GR_LINE_SOLID, GR_LINE_ONOFF_DASH */
         unsigned long   dashmask;
         char            dashcount;
-   
+
         int             fillmode;	/* GR_FILL_SOLID, STIPPLE, OPAQUE_STIPPLE, TILE */
         GR_STIPPLE      stipple;	/* width,height,bitmap*/
         struct {
@@ -106,7 +106,7 @@ struct gr_region {
 	GR_CLIENT *	owner;		/* client that created it */
 	GR_REGION *	next;
 };
- 
+
 /*
  * Structure to remember fonts.
  */
@@ -367,5 +367,5 @@ extern  MWCOORD		nyres;			/* requested server y res*/
  * specify the nano-X server address in the AF_INET case (default 127.0.0.1)
  */
 #define GR_NAMED_SOCKET	"/tmp/.nano-X"		/* AF_UNIX socket name*/
-#define GR_NUM_SOCKET	6600			/* AF_INET socket number*/
+#define GR_NUM_SOCKET	7700			/* AF_INET socket number*/
 #define GR_ELKS_SOCKET	79			/* AF_NANO socket number*/

@@ -4,7 +4,7 @@
  * Portions Copyright (c) 2002, 2003 by Koninklijke Philips Electronics N.V.
  *
  * Nano-X Core Protocol Header
- * 
+ *
  * These structures define the Nano-X client/server protocol.
  * Much of this has been modeled after the X11 implementation.
  * Note that all NX Protocol requests should have all data quantities
@@ -24,7 +24,7 @@
  * request size that will be sent (not received) using this protocol.
  * The protocol allows for 2^24 byte maximum, but the
  * server currently allocates the MAXREQUESTSZ in a stack buffer.
- * Also, the client realloc's the request queue to 
+ * Also, the client realloc's the request queue to
  * the largest size asked for, and currently never reduces it.
  *
  * Routines like GrArea will split packets to be <= MAXREQUESTSZ
@@ -37,7 +37,7 @@
 #define MAXREQUESTSZ	512             /* max request size FIXME */
 #define SZREQBUF        512	        /* initial request buffer size*/
 #else
-#define MAXREQUESTSZ	30000           /* max request size (65532)*/
+#define MAXREQUESTSZ	 2572864          /* max request size (65532)*/
 #define SZREQBUF        2048	        /* initial request buffer size*/
 #endif
 
@@ -1197,7 +1197,7 @@ typedef struct {
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
-	UINT16	length;  
+	UINT16	length;
 } nxQueryPointerReq;
 
 #define GrNumSetGCLineAttributes 109
@@ -1205,7 +1205,7 @@ typedef struct {
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
-	UINT16	length;  
+	UINT16	length;
   	IDTYPE	gcid;
         UINT16  linestyle;
 } nxSetGCLineAttributesReq;
@@ -1215,7 +1215,7 @@ typedef struct {
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
-	UINT16	length;  
+	UINT16	length;
         IDTYPE	gcid;
         UINT16	count;
 } nxSetGCDashReq;
@@ -1225,7 +1225,7 @@ typedef struct {
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
-	UINT16	length;  
+	UINT16	length;
         IDTYPE	gcid;
         UINT16	fillmode;
 } nxSetGCFillModeReq;
@@ -1235,7 +1235,7 @@ typedef struct {
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
-	UINT16	length;  
+	UINT16	length;
         IDTYPE	gcid;
         INT16	width;
         INT16	height;
@@ -1246,7 +1246,7 @@ typedef struct {
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
-	UINT16	length;  
+	UINT16	length;
         IDTYPE	gcid;
         INT16	xoffset;
         INT16	yoffset;
@@ -1257,7 +1257,7 @@ typedef struct {
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
-	UINT16	length;  
+	UINT16	length;
         IDTYPE  gcid;
         IDTYPE  pixmap;
         INT16	width;
@@ -1340,7 +1340,7 @@ typedef struct {
 	UINT16	length;
         IDTYPE	wid;
         INT16	type;
-        UINT16	key;  
+        UINT16	key;
 } nxGrabKeyReq;
 
 #define GrNumSetTransform       122
@@ -1357,7 +1357,7 @@ typedef struct {
 	UINT32	trans_f;
 	UINT32	trans_s;
 } nxSetTransformReq;
-  
+
 #define GrNumCreateFontFromBuffer	123
 typedef struct {
 	BYTE8 reqType;

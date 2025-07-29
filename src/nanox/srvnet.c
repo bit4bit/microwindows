@@ -58,6 +58,7 @@ GrOpenWrapper(void *r)
 
 	/* store process id of client*/
 	curclient->processid = req->pid;
+	EPRINTF("nano-X: Client %x opened\n", curclient->processid);
 
 	GrOpen();
 }
@@ -1869,7 +1870,7 @@ GsOpenSocket(void)
 		return -1;
 	}
 	sckt.sin_family = AF_INET;
-	sckt.sin_port = htons(6600);
+	sckt.sin_port = htons(7700);
 	if (inet_pton(AF_INET, "127.0.0.1", &sckt.sin_addr) != 1) {
 		EPRINTF("nano-X: Error setting socket address\n");
 		return -1;
@@ -1880,26 +1881,16 @@ GsOpenSocket(void)
 		return -1;
 	}
 	char initPacket[5] = {0};
-	while(1) {
-    	if (read(un_sock, initPacket, sizeof(initPacket)) != 5) {
-          if (errno == 6) {
-              GdDelay(1000);
-              EPRINTF("nano-x: waiting for initial packet from socket\n");
-              continue;
-          } else {
-    		EPRINTF("nano-X: Failed to read initial packet from socket, error %d: %s\n", errno, strerror(errno));
-
-    		return -1;
-          }
-    	} else {
-         if (strcmp(initPacket, "READY") == 0) {
-            EPRINTF("nano-X: Received initial packet from socket\n");
-         } else {
-             EPRINTF("nano-X: Invalid initial packet from socket\n");
-         }
-    		break;
-    	}
+	if (GsReadAsync(un_sock, initPacket, sizeof(initPacket), 10000)) {
+		EPRINTF("nano-X: Error waiting for initial packet from socket\n");
+		return -1;
 	}
+	if (strcmp(initPacket, "READY") == 0) {
+            EPRINTF("nano-X: Received initial packet from socket\n");
+        } else {
+            EPRINTF("nano-X: Unexpected initial packet from socket\n");
+            return -1;
+        }
 
 	return 1;
 }
@@ -2204,23 +2195,23 @@ GsRead(int fd, void *buf, int c)
 }
 
 int
-GsReadAsync(int fd, void *buf, int c)
+GsReadAsync(int fd, void *buf, int c, int timeout)
 {
 	int e, n;
 
 	n = 0;
-	int timeout = 0;
+	int tick_timeout = 0;
 	while(n < c) {
 		e = read(fd, ((char *)buf) + n, c - n);
 		if(e <= 0) {
 			if (e == 0)
 				EPRINTF("nano-X: client closed socket: %d\n", fd);
 			else if (errno == 6){
-			if (timeout > 1000){
+			if (tick_timeout > timeout){
 			return 0;
 			}
 				GdDelay(50);
-				timeout += 50;
+				tick_timeout += 50;
 				continue;
 			} else {
 				EPRINTF("nano-X: Read error on socket %d, error %d: %s\n", fd, errno, strerror(errno));
@@ -2281,7 +2272,7 @@ GsHandleClient(int fd)
 	current_shm_cmds_size = curclient->shm_cmds_size;
 #endif
 	/* read request header*/
-	if(GsReadAsync(fd, buf, sizeof(nxReq)))
+	if(GsRead(fd, buf, sizeof(nxReq)))
 		return;
 
 #pragma GCC diagnostic ignored "-Wstrict-aliasing"
@@ -2294,7 +2285,7 @@ GsHandleClient(int fd)
 		}
 		/* read additional request data*/
 
-		if(GsReadAsync(fd, &buf[sizeof(nxReq)], len-sizeof(nxReq)))
+		if(GsReadAsync(fd, &buf[sizeof(nxReq)], len-sizeof(nxReq), 3000))
 			return;
 	}
 	req = (nxReq *)&buf[0];
