@@ -41,10 +41,10 @@
 #define SZREQBUF        2048	        /* initial request buffer size*/
 #endif
 
-typedef unsigned char	BYTE8;		/* 1 byte*/
-typedef unsigned short	UINT16;		/* 2 bytes*/
-typedef short		INT16;		/* 2 bytes*/
-typedef unsigned long	UINT32;		/* 4 bytes*/
+typedef uint8_t 	BYTE8;		/* 1 byte*/
+typedef uint16_t	UINT16;		/* 2 bytes*/
+typedef int16_t		INT16;		/* 2 bytes*/
+typedef uint32_t	UINT32;		/* 4 bytes*/
 
 #if ELKS
 typedef UINT16		IDTYPE;
