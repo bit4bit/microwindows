@@ -1,4 +1,4 @@
-/* 
+/*
  * nxclock - Nano-X clock program
  *
  * Copyright (C) 2000 by Greg Haerr <greg@censoft.com>
@@ -39,7 +39,7 @@ static unsigned char trig[91] =
 	181, 184, 187, 190, 193, 196, 198, 201, 204, 207, 209, 212, 214, 217,
 	219, 221, 223, 226, 228, 230, 232, 233, 235, 237, 238, 240, 242, 243,
 	244, 246, 247, 248, 249, 250, 251, 252, 252, 253, 254, 254, 255, 255,
-	255, 255, 255, 255}; 
+	255, 255, 255, 255};
 
 void do_exposure(GR_EVENT_EXPOSURE *ep);
 void do_clock(void);
@@ -61,11 +61,11 @@ main(int ac, char **av)
 		GrError("cannot open graphics\n");
 		return 1;
 	}
-	
+	return 1;
 	/* create window*/
 	w1 = GrNewWindowEx(GR_WM_PROPS_APPWINDOW, "Clock", GR_ROOT_WINDOW_ID,
 		-1, -1, CWIDTH, CHEIGHT, GrGetSysColor(GR_COLOR_WINDOW));
-		
+
 	GrSelectEvents(w1, GR_EVENT_MASK_EXPOSURE | GR_EVENT_MASK_CLOSE_REQ);
 
 	gc1 = GrNewGC();
@@ -199,9 +199,9 @@ do_exposure(GR_EVENT_EXPOSURE *ep)
 			l = 0;
 		}
 		GrLine(w1, gc2,
-			midx + (((midx - 3) * bsin(i * 6)) >> 8), 
-			midy + (((midy - 3) * bcos(i * 6)) >> 8), 
-			midx + (((midx - 3 - l) * bsin(i * 6)) >> 8), 
+			midx + (((midx - 3) * bsin(i * 6)) >> 8),
+			midy + (((midy - 3) * bcos(i * 6)) >> 8),
+			midx + (((midx - 3 - l) * bsin(i * 6)) >> 8),
 			midy + (((midy - 3 - l) * bcos(i * 6)) >> 8));
 	}
 
@@ -216,35 +216,35 @@ void draw_time(int hour, int minutes, int sec, GR_GC_ID gc)
 	GR_COORD	midy = CHEIGHT / 2;
 
 	GrLine(w1, gc1,
-		midx + (((midx - 8 - midx / 10) * bsin(ls)) >> 8), 
-		midy - (((midy - 8 - midy / 10) * bcos(ls)) >> 8), 
-		midx + (((midx - 8 - midx / 4) * bsin(ls)) >> 8), 
+		midx + (((midx - 8 - midx / 10) * bsin(ls)) >> 8),
+		midy - (((midy - 8 - midy / 10) * bcos(ls)) >> 8),
+		midx + (((midx - 8 - midx / 4) * bsin(ls)) >> 8),
 		midy - (((midy - 8 - midx / 4) * bcos(ls)) >> 8));
 	GrLine(w1, gc2,
-		midx + (((midx - 8 - midx / 10) * bsin(sec)) >> 8), 
-		midy - (((midy - 8 - midy / 10) * bcos(sec)) >> 8), 
-		midx + (((midx - 8 - midx / 4) * bsin(sec)) >> 8), 
+		midx + (((midx - 8 - midx / 10) * bsin(sec)) >> 8),
+		midy - (((midy - 8 - midy / 10) * bcos(sec)) >> 8),
+		midx + (((midx - 8 - midx / 4) * bsin(sec)) >> 8),
 		midy - (((midy - 8 - midx / 4) * bcos(sec)) >> 8));
 	if ((lm != minutes) || (ls == minutes)) {
 		GrLine(w1, gc1,
-			midx + (((midx - 8 - midx / 10) * bsin(lm)) >> 8), 
-			midy - (((midy - 8 - midy / 10) * bcos(lm)) >> 8), 
-			midx + (((midx / 5) * bsin(lm)) >> 8), 
+			midx + (((midx - 8 - midx / 10) * bsin(lm)) >> 8),
+			midy - (((midy - 8 - midy / 10) * bcos(lm)) >> 8),
+			midx + (((midx / 5) * bsin(lm)) >> 8),
 			midy - (((midy / 5) * bcos(lm)) >> 8));
 		GrLine(w1, gc2,
-			midx + (((midx - 8 - midx / 10) * bsin(minutes)) >> 8), 
-			midy - (((midy - 8 - midy / 10) * bcos(minutes)) >> 8), 
-			midx + (((midx / 5) * bsin(minutes)) >> 8), 
+			midx + (((midx - 8 - midx / 10) * bsin(minutes)) >> 8),
+			midy - (((midy - 8 - midy / 10) * bcos(minutes)) >> 8),
+			midx + (((midx / 5) * bsin(minutes)) >> 8),
 			midy - (((midy / 5) * bcos(minutes)) >> 8));
 		GrLine(w1, gc1,
-			midx + (((midx - 8 - midx / 2) * bsin(lh)) >> 8), 
-			midy - (((midy - 8 - midy / 2) * bcos(lh)) >> 8), 
-			midx + (((midx / 5) * bsin(lh)) >> 8), 
+			midx + (((midx - 8 - midx / 2) * bsin(lh)) >> 8),
+			midy - (((midy - 8 - midy / 2) * bcos(lh)) >> 8),
+			midx + (((midx / 5) * bsin(lh)) >> 8),
 			midy - (((midy / 5) * bcos(lh)) >> 8));
 		GrLine(w1, gc2,
-			midx + (((midx - 8 - midx / 2) * bsin(hour)) >> 8), 
-			midy - (((midy - 8 - midy / 2) * bcos(hour)) >> 8), 
-			midx + (((midx / 5) * bsin(hour)) >> 8), 
+			midx + (((midx - 8 - midx / 2) * bsin(hour)) >> 8),
+			midy - (((midy - 8 - midy / 2) * bcos(hour)) >> 8),
+			midx + (((midx / 5) * bsin(hour)) >> 8),
 			midy - (((midy / 5) * bcos(hour)) >> 8));
 	}
 	lh = hour;

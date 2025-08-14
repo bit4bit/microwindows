@@ -471,7 +471,7 @@ int		GsPutCh(int fd, unsigned char c);
 GR_CLIENT	*GsFindClient(int fd);
 void		GsDestroyClientResources(GR_CLIENT * client);
 void		GsDropClient(int fd);
-int		GsRead(int fd, void *buf, int c);
+int		GsRead(int fd, void *buf, int c, int *bytes_read);
 int     GsReadAsync(int fd, void *buf, int c, int timeout);
 int		GsWrite(int fd, void *buf, int c);
 void		GsHandleClient(int fd);

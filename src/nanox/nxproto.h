@@ -55,7 +55,8 @@ typedef UINT32		IDTYPE;
 #endif
 
 /* all requests share this header*/
-typedef struct {
+ #pragma pack(1)
+ typedef struct {
 	BYTE8	reqType;	/* request code*/
 	BYTE8	hilength;	/* upper 24 bits of unaligned length*/
 	UINT16	length;		/* lower 16 bits of unaligned length*/
@@ -94,6 +95,7 @@ int	nxCalcStringBytes(void *str, int count, GR_TEXTFLAGS flags);
 
 #if notyet
 /* all replies share this header*/
+#pragma pack(1)
 typedef struct {
 	BYTE8	repType;	/* reply code*/
 	BYTE8	hilength;	/* upper 24 bits of unaligned length*/
@@ -106,6 +108,7 @@ typedef struct {
 #endif /* notyet*/
 
 #define GrNumOpen               0
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -114,6 +117,7 @@ typedef struct {
 } nxOpenReq;
 
 #define GrNumClose              1
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -121,6 +125,7 @@ typedef struct {
 } nxCloseReq;
 
 #define GrNumGetScreenInfo      2
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -128,6 +133,7 @@ typedef struct {
 } nxGetScreenInfoReq;
 
 #define GrNumNewWindow          3
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -143,6 +149,7 @@ typedef struct {
 } nxNewWindowReq;
 
 #define GrNumNewInputWindow     4
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -155,6 +162,7 @@ typedef struct {
 } nxNewInputWindowReq;
 
 #define GrNumDestroyWindow      5
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -163,6 +171,7 @@ typedef struct {
 } nxDestroyWindowReq;
 
 #define GrNumNewGC              6
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -170,6 +179,7 @@ typedef struct {
 } nxNewGCReq;
 
 #define GrNumCopyGC		7
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -178,6 +188,7 @@ typedef struct {
 } nxCopyGCReq;
 
 #define GrNumGetGCInfo          8
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -186,6 +197,7 @@ typedef struct {
 } nxGetGCInfoReq;
 
 #define GrNumDestroyGC          9
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -194,6 +206,7 @@ typedef struct {
 } nxDestroyGCReq;
 
 #define GrNumMapWindow          10
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -202,6 +215,7 @@ typedef struct {
 } nxMapWindowReq;
 
 #define GrNumUnmapWindow        11
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -210,6 +224,7 @@ typedef struct {
 } nxUnmapWindowReq;
 
 #define GrNumRaiseWindow        12
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -218,6 +233,7 @@ typedef struct {
 } nxRaiseWindowReq;
 
 #define GrNumLowerWindow        13
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -226,6 +242,7 @@ typedef struct {
 } nxLowerWindowReq;
 
 #define GrNumMoveWindow         14
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -236,6 +253,7 @@ typedef struct {
 } nxMoveWindowReq;
 
 #define GrNumResizeWindow       15
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -246,6 +264,7 @@ typedef struct {
 } nxResizeWindowReq;
 
 #define GrNumGetWindowInfo      16
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -254,6 +273,7 @@ typedef struct {
 } nxGetWindowInfoReq;
 
 #define GrNumGetFontInfo        17
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -262,6 +282,7 @@ typedef struct {
 } nxGetFontInfoReq;
 
 #define GrNumSetFocus           18
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -270,6 +291,7 @@ typedef struct {
 } nxSetFocusReq;
 
 #define GrNumSetWindowCursor    19
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -279,6 +301,7 @@ typedef struct {
 } nxSetWindowCursorReq;
 
 #define GrNumClearArea          20
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -292,6 +315,7 @@ typedef struct {
 } nxClearAreaReq;
 
 #define GrNumSelectEvents       21
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -301,6 +325,7 @@ typedef struct {
 } nxSelectEventsReq;
 
 #define GrNumGetNextEvent       22
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -308,6 +333,7 @@ typedef struct {
 } nxGetNextEventReq;
 
 #define GrNumCheckNextEvent     23
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -315,6 +341,7 @@ typedef struct {
 } nxCheckNextEventReq;
 
 #define GrNumPeekEvent          24
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -322,6 +349,7 @@ typedef struct {
 } nxPeekEventReq;
 
 #define GrNumLine               25
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -335,6 +363,7 @@ typedef struct {
 } nxLineReq;
 
 #define GrNumPoint              26
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -346,6 +375,7 @@ typedef struct {
 } nxPointReq;
 
 #define GrNumRect               27
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -359,6 +389,7 @@ typedef struct {
 } nxRectReq;
 
 #define GrNumFillRect           28
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -372,6 +403,7 @@ typedef struct {
 } nxFillRectReq;
 
 #define GrNumPoly               29
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -382,6 +414,7 @@ typedef struct {
 } nxPolyReq;
 
 #define GrNumFillPoly           30
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -392,6 +425,7 @@ typedef struct {
 } nxFillPolyReq;
 
 #define GrNumEllipse            31
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -405,6 +439,7 @@ typedef struct {
 } nxEllipseReq;
 
 #define GrNumFillEllipse        32
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -418,6 +453,7 @@ typedef struct {
 } nxFillEllipseReq;
 
 #define GrNumSetGCForeground    33
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -427,6 +463,7 @@ typedef struct {
 } nxSetGCForegroundReq;
 
 #define GrNumSetGCBackground    34
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -436,6 +473,7 @@ typedef struct {
 } nxSetGCBackgroundReq;
 
 #define GrNumSetGCUseBackground 35
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -445,6 +483,7 @@ typedef struct {
 } nxSetGCUseBackgroundReq;
 
 #define GrNumSetGCMode          36
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -454,6 +493,7 @@ typedef struct {
 } nxSetGCModeReq;
 
 #define GrNumSetGCFont          37
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -463,6 +503,7 @@ typedef struct {
 } nxSetGCFontReq;
 
 #define GrNumGetGCTextSize      38
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -474,6 +515,7 @@ typedef struct {
 } nxGetGCTextSizeReq;
 
 #define GrNumReadArea           39
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -486,6 +528,7 @@ typedef struct {
 } nxReadAreaReq;
 
 #define GrNumArea               40
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -502,6 +545,7 @@ typedef struct {
 } nxAreaReq;
 
 #define GrNumBitmap             41
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -516,6 +560,7 @@ typedef struct {
 } nxBitmapReq;
 
 #define GrNumText               42
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -531,6 +576,7 @@ typedef struct {
 } nxTextReq;
 
 #define GrNumNewCursor          43
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -546,6 +592,7 @@ typedef struct {
 } nxNewCursorReq;
 
 #define GrNumMoveCursor         44
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -555,6 +602,7 @@ typedef struct {
 } nxMoveCursorReq;
 
 #define GrNumGetSystemPalette      45
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -562,6 +610,7 @@ typedef struct {
 } nxGetSystemPaletteReq;
 
 #define GrNumFindColor             46
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -570,6 +619,7 @@ typedef struct {
 } nxFindColorReq;
 
 #define GrNumReparentWindow        47
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -581,6 +631,7 @@ typedef struct {
 } nxReparentWindowReq;
 
 #define GrNumDrawImageFromFile     48
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -596,6 +647,7 @@ typedef struct {
 } nxDrawImageFromFileReq;
 
 #define GrNumLoadImageFromFile     49
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -605,6 +657,7 @@ typedef struct {
 } nxLoadImageFromFileReq;
 
 #define GrNumNewPixmapEx          50
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -616,6 +669,7 @@ typedef struct {
 } nxNewPixmapExReq;
 
 #define GrNumCopyArea          51
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -633,6 +687,7 @@ typedef struct {
 } nxCopyAreaReq;
 
 #define GrNumSetFontSizeEx      52
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -643,6 +698,7 @@ typedef struct {
 } nxSetFontSizeExReq;
 
 #define GrNumCreateFontEx		53
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -652,6 +708,7 @@ typedef struct {
 } nxCreateFontExReq;
 
 #define GrNumDestroyFont	54
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -660,6 +717,7 @@ typedef struct {
 } nxDestroyFontReq;
 
 #define GrNumReqShmCmds         55
+#pragma pack(1)
 typedef struct {
 	BYTE8   reqType;
 	BYTE8   hilength;
@@ -668,6 +726,7 @@ typedef struct {
 } nxReqShmCmdsReq;
 
 #define GrNumShmCmdsFlush       56
+#pragma pack(1)
 typedef struct {
 	BYTE8   reqType;
 	BYTE8   hilength;
@@ -677,6 +736,7 @@ typedef struct {
 } nxShmCmdsFlushReq;
 
 #define GrNumSetFontRotation    57
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -686,6 +746,7 @@ typedef struct {
 } nxSetFontRotationReq;
 
 #define GrNumSetFontAttr        58
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -696,6 +757,7 @@ typedef struct {
 } nxSetFontAttrReq;
 
 #define GrNumSetSystemPalette   59
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -708,6 +770,7 @@ typedef struct {
 #define GrNumInjectEvent	60
 #define GR_INJECT_EVENT_POINTER		0
 #define GR_INJECT_EVENT_KEYBOARD	1
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -731,6 +794,7 @@ typedef struct {
 } nxInjectEventReq;
 
 #define GrNumNewRegion		61
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -738,6 +802,7 @@ typedef struct {
 } nxNewRegionReq;
 
 #define GrNumDestroyRegion	62
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -746,6 +811,7 @@ typedef struct {
 } nxDestroyRegionReq;
 
 #define GrNumUnionRectWithRegion	63
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -755,6 +821,7 @@ typedef struct {
 } nxUnionRectWithRegionReq;
 
 #define GrNumUnionRegion	64
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -765,6 +832,7 @@ typedef struct {
 } nxUnionRegionReq;
 
 #define GrNumIntersectRegion	65
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -775,6 +843,7 @@ typedef struct {
 } nxIntersectRegionReq;
 
 #define GrNumSetGCRegion	66
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -784,6 +853,7 @@ typedef struct {
 } nxSetGCRegionReq;
 
 #define GrNumSubtractRegion	67
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -794,6 +864,7 @@ typedef struct {
 } nxSubtractRegionReq;
 
 #define GrNumXorRegion		68
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -804,6 +875,7 @@ typedef struct {
 } nxXorRegionReq;
 
 #define GrNumPointInRegion	69
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -814,6 +886,7 @@ typedef struct {
 } nxPointInRegionReq;
 
 #define GrNumRectInRegion	70
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -826,6 +899,7 @@ typedef struct {
 } nxRectInRegionReq;
 
 #define GrNumEmptyRegion	71
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -834,6 +908,7 @@ typedef struct {
 } nxEmptyRegionReq;
 
 #define GrNumEqualRegion	72
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -843,6 +918,7 @@ typedef struct {
 } nxEqualRegionReq;
 
 #define GrNumOffsetRegion	73
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -853,6 +929,7 @@ typedef struct {
 } nxOffsetRegionReq;
 
 #define GrNumGetRegionBox	74
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -861,6 +938,7 @@ typedef struct {
 } nxGetRegionBoxReq;
 
 #define GrNumNewPolygonRegion	75
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -871,6 +949,7 @@ typedef struct {
 } nxNewPolygonRegionReq;
 
 #define GrNumArc		76
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -889,6 +968,7 @@ typedef struct {
 } nxArcReq;
 
 #define GrNumArcAngle		77
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -905,6 +985,7 @@ typedef struct {
 } nxArcAngleReq;
 
 #define GrNumSetWMProperties	78
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -915,6 +996,7 @@ typedef struct {
 } nxSetWMPropertiesReq;
 
 #define GrNumGetWMProperties	79
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -923,6 +1005,7 @@ typedef struct {
 } nxGetWMPropertiesReq;
 
 #define GrNumCloseWindow	80
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -931,6 +1014,7 @@ typedef struct {
 } nxCloseWindowReq;
 
 #define GrNumKillWindow		81
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -939,6 +1023,7 @@ typedef struct {
 } nxKillWindowReq;
 
 #define GrNumDrawImageToFit     82
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -953,6 +1038,7 @@ typedef struct {
 } nxDrawImageToFitReq;
 
 #define GrNumFreeImage          83
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -961,6 +1047,7 @@ typedef struct {
 } nxFreeImageReq;
 
 #define GrNumGetImageInfo       84
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -969,6 +1056,7 @@ typedef struct {
 } nxGetImageInfoReq;
 
 #define GrNumDrawImageBits      85
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -991,6 +1079,7 @@ typedef struct {
 } nxDrawImageBitsReq;
 
 #define GrNumPoints             86
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1001,6 +1090,7 @@ typedef struct {
 } nxPointsReq;
 
 #define GrNumGetFocus           87
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1008,6 +1098,7 @@ typedef struct {
 } nxGetFocusReq;
 
 #define GrNumGetSysColor        88
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1016,6 +1107,7 @@ typedef struct {
 } nxGetSysColorReq;
 
 #define GrNumSetScreenSaverTimeout	89
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1024,6 +1116,7 @@ typedef struct {
 } nxSetScreenSaverTimeoutReq;
 
 #define GrNumSetSelectionOwner	90
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1033,6 +1126,7 @@ typedef struct {
 } nxSetSelectionOwnerReq;
 
 #define GrNumGetSelectionOwner	91
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1040,6 +1134,7 @@ typedef struct {
 } nxGetSelectionOwnerReq;
 
 #define GrNumRequestClientData	92
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1051,6 +1146,7 @@ typedef struct {
 } nxRequestClientDataReq;
 
 #define GrNumSendClientData	93
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1063,6 +1159,7 @@ typedef struct {
 } nxSendClientDataReq;
 
 #define GrNumBell		94
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1070,6 +1167,7 @@ typedef struct {
 } nxBellReq;
 
 #define GrNumSetBackgroundPixmap 95
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1080,6 +1178,7 @@ typedef struct {
 } nxSetBackgroundPixmapReq;
 
 #define GrNumDestroyCursor	96
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1088,6 +1187,7 @@ typedef struct {
 } nxDestroyCursorReq;
 
 #define GrNumQueryTree   	97
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1096,6 +1196,7 @@ typedef struct {
 } nxQueryTreeReq;
 
 #define GrNumCreateTimer	98
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1105,6 +1206,7 @@ typedef struct {
 } nxCreateTimerReq;
 
 #define GrNumDestroyTimer	99
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1113,6 +1215,7 @@ typedef struct {
 } nxDestroyTimerReq;
 
 #define GrNumSetPortraitMode	100
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1122,6 +1225,7 @@ typedef struct {
 
 #define GrNumImageBufferAlloc   101
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1131,6 +1235,7 @@ typedef struct {
 
 #define GrNumImageBufferSend    102
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1140,6 +1245,7 @@ typedef struct {
 } nxImageBufferSendReq;
 
 #define GrNumLoadImageFromBuffer 103
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1150,6 +1256,7 @@ typedef struct {
 } nxLoadImageFromBufferReq;
 
 #define GrNumDrawImageFromBuffer 104
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1165,6 +1272,7 @@ typedef struct {
 } nxDrawImageFromBufferReq;
 
 #define GrNumGetFontList        105
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1173,6 +1281,7 @@ typedef struct {
 
 #define GrNumSetGCClipOrigin    106
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1184,6 +1293,7 @@ typedef struct {
 
 #define GrNumSetGCGraphicsExposure 107
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1194,6 +1304,7 @@ typedef struct {
 
 #define GrNumQueryPointer       108
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1202,6 +1313,7 @@ typedef struct {
 
 #define GrNumSetGCLineAttributes 109
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1212,6 +1324,7 @@ typedef struct {
 
 #define GrNumSetGCDash          110
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1222,6 +1335,7 @@ typedef struct {
 
 #define GrNumSetGCFillMode      111
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1232,6 +1346,7 @@ typedef struct {
 
 #define GrNumSetGCStipple       112
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1243,6 +1358,7 @@ typedef struct {
 
 #define GrNumSetGCTSOffset      113
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1254,6 +1370,7 @@ typedef struct {
 
 #define GrNumSetGCTile          114
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1266,6 +1383,7 @@ typedef struct {
 
 #define GrNumNewBitmapRegion    115
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1277,6 +1395,7 @@ typedef struct {
 
 #define GrNumSetWindowRegion    116
 
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;
@@ -1288,6 +1407,7 @@ typedef struct {
 
 #define GrNumSetGCForegroundPixelVal    117
 
+#pragma pack(1)
 typedef struct {
 	BYTE8 reqType;
 	BYTE8 hilength;
@@ -1298,6 +1418,7 @@ typedef struct {
 
 #define GrNumSetGCBackgroundPixelVal    118
 
+#pragma pack(1)
 typedef struct {
 	BYTE8 reqType;
 	BYTE8 hilength;
@@ -1307,6 +1428,7 @@ typedef struct {
 } nxSetGCBackgroundPixelValReq;
 
 #define GrNumCreateLogFont      119
+#pragma pack(1)
 typedef struct {
 	BYTE8 reqType;
 	BYTE8 hilength;
@@ -1315,6 +1437,7 @@ typedef struct {
 } nxCreateLogFontReq;
 
 #define GrNumStretchArea        120
+#pragma pack(1)
 typedef struct {
 	BYTE8 reqType;
 	BYTE8 hilength;
@@ -1334,6 +1457,7 @@ typedef struct {
 } nxStretchAreaReq;
 
 #define GrNumGrabKey            121
+#pragma pack(1)
 typedef struct {
         BYTE8	reqType;
 	BYTE8	hilength;
@@ -1344,6 +1468,7 @@ typedef struct {
 } nxGrabKeyReq;
 
 #define GrNumSetTransform       122
+#pragma pack(1)
 typedef struct {
         BYTE8	reqType;
 	BYTE8	hilength;
@@ -1359,6 +1484,7 @@ typedef struct {
 } nxSetTransformReq;
 
 #define GrNumCreateFontFromBuffer	123
+#pragma pack(1)
 typedef struct {
 	BYTE8 reqType;
 	BYTE8 hilength;
@@ -1370,6 +1496,7 @@ typedef struct {
 } nxCreateFontFromBufferReq;
 
 #define GrNumCopyFont		124
+#pragma pack(1)
 typedef struct {
 	BYTE8 reqType;
 	BYTE8 hilength;
@@ -1380,6 +1507,7 @@ typedef struct {
 } nxCopyFontReq;
 
 #define GrNumDrawImagePartToFit     125
+#pragma pack(1)
 typedef struct {
 	BYTE8	reqType;
 	BYTE8	hilength;

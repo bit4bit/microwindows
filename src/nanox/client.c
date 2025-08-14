@@ -385,7 +385,8 @@ GrOpen(void)
 	req.length = sizeof(req);
 	/* associate the process ID with the client*/
 	req.pid = getpid();
-
+	// sizeof(req) == 16 ???/
+	EPRINTF("nano-x: client %x sizeof(req)e", getpid());
 	nxWriteSocket((char *)&req,sizeof(req));
 	return nxSocket;
 }
